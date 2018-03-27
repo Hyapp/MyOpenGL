@@ -1,11 +1,14 @@
 # MyOpenGL
-
-Need OpenGL 3.0 at least.
-Need the Compiler supports C++11 at least.
+OpenGL 3.3 at least.
+Using OpenGL core profile.
+Compiler supports C++11 at least.
+(Visual C++ 12(Visual Studio 2013),GCC 4.6,etc, or later is required)
 Compiler support:
 http://en.cppreference.com/w/cpp/compiler_support
 
-ĞèÒªOpenGL 3.3»ò¸ü¸ß°æ±¾
-ĞèÒª±àÒëÆ÷Ö§³ÖC++11ÌØĞÔ
-²éÑ¯±àÒëÆ÷Ö§³Ö³Ì¶È£º
+éœ€è¦ä½¿ç”¨OpenGL 3.3æˆ–æ›´æ–°ç‰ˆæœ¬
+éœ€è¦ä½¿ç”¨OpenGL æ ¸å¿ƒæ¸²æŸ“æ¨¡å¼
+éœ€è¦ç¼–è¯‘å™¨æ”¯æŒC++11æ ‡å‡†
+ï¼ˆVC++ 12.0(Visual Studio 2013)ï¼ŒGCC 4.6ç­‰ï¼Œæˆ–æ›´é«˜ç‰ˆæœ¬ï¼‰
+ç¼–è¯‘å™¨æ”¯æŒï¼š
 http://zh.cppreference.com/w/cpp/compiler_support
