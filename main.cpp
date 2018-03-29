@@ -1,12 +1,15 @@
 #include"OpenGL.h"
+#include"Boost.h"
 #include<memory>
 
 int main(int argc, char *argv[])
 {
 	std::unique_ptr<float[]> GetMandelbortPoints();
 	using namespace MyOpenGL;
+	using namespace Beyond;
+	
 	GLFWInitialization::GLFWInit(4, 6);
-	_CreateWindow window0(1920, 1080, "WenLi");
+	_CreateWindow window0(1920, 1080, "Maoxian");
 	if (!window0.available())
 	{
 		return -1;
@@ -25,8 +28,9 @@ int main(int argc, char *argv[])
 	_VertexArray vertexarray;
 	_ArrayBuffer arraybuffer(1920 * 1080 * 3, data.get(), _GL_PLOT_WAY::static_draw);
 	_VertexAttrubPoint(0, 3, 3, (void *)0);
-	_Color<int> colo;
-	_Background back(colo);
+//	_Color<int> colo;
+//	_Background back(colo);
+	__Background background(__Color(1.0f, 1.0f, 1.0f));
 	while (!glfwWindowShouldClose(window0.use()))
 	{
 		back.Use();
