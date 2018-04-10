@@ -64,5 +64,26 @@ namespace MyOpenGL
 		this->green = rhs.green;
 		this->blue = rhs.blue;
 		this->a = rhs.a;
+		return *this;
+	}
+
+	template<typename T>
+	template<typename T1>
+	bool _Color<T>::operator==(const _Color<T1>& rhs) const
+	{
+		if (
+			rhs.red != this->red &&
+			rhs.green != this->green &&
+			rhs.blue != this->blue &&
+			rhs.a != this->a
+			)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+		return false;
 	}
 }

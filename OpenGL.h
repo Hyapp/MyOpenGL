@@ -46,7 +46,7 @@ namespace MyOpenGL
 		_CreateWindow(_CreateWindow & window0);
 		_CreateWindow & operator =(const _CreateWindow &rhs);
 		~_CreateWindow(void);
-		GLFWwindow* use(void);
+		GLFWwindow * use(void) const;
 		bool available(void);
 	private:
 		mutable GLFWwindow * window = nullptr;
@@ -93,6 +93,24 @@ namespace MyOpenGL
 		_VertexAttrubPoint(unsigned int name, unsigned int dataLength, unsigned int allLength, void * point, int type = GL_FLOAT, int boolean = GL_FALSE);
 	};
 
+	class _VertexElement
+	{
+	public:
+		_VertexElement(unsigned int num, unsigned int* data, unsigned int numArray, GLfloat * arrayData, _GL_PLOT_WAY);
+		~_VertexElement(void);
+	private:
+		unsigned int EBO;
+	};
+
+	class _Texture2D
+	{
+	public:
+		_Texture2D(const std::string & file);
+		void ReBind();
+	private:
+		unsigned int texture;
+	};
+
 	template<typename T>
 	class _Color
 	{
@@ -103,23 +121,28 @@ namespace MyOpenGL
 		_Color(T &&red, T &&green, T &&blue, T &&a);
 		_Color(_Color<T> & color);
 		template<typename T1>
-		_Color<T> operator = (const _Color<T1> & lastColor);
+		_Color<T> operator = (const _Color<T1> & rhs);
+		template<typename T1>
+		bool operator ==(const _Color<T1> & rhs) const;
 		bool SetColor(T &red, T &green, T &blue, T &a);
 	private:
-		GLfloat red, green, blue, a;
+		float red, green, blue, a;
 	};
 
 	class _Background
 	{
 	public:
 		template<typename T>
-		_Background(_Color<T> &color);
-		bool SetBackground(GLfloat red, GLfloat green, GLfloat blue, GLfloat a);
+		_Background(const T &color);
+
+		bool SetBackground(const GLfloat red, const GLfloat green, const GLfloat blue, const GLfloat a);
+
 		template<typename T>
-		bool SetBackground(_Color<T> &color);
+		bool SetBackground(const _Color<T> &color);
 
 		void Use(void);
 	private:
 		_Color<GLfloat> color;
+		bool stuta;
 	};
 }
