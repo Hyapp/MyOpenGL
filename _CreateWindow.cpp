@@ -30,12 +30,12 @@ namespace MyOpenGL
 		this->window = nullptr;
 	}
 
-	GLFWwindow * _CreateWindow::use() const
+	GLFWwindow * _CreateWindow::Use() const
 	{
 		return (!window) ? nullptr : window;
 	}
 
-	bool _CreateWindow::available(void)
+	bool _CreateWindow::Available(void)
 	{
 		return (window) ? true : false;
 	}

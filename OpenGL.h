@@ -5,6 +5,7 @@
 #include<sstream>
 #include<iostream>
 #include<GLFW\glfw3.h>
+#include<vector>
 
 namespace MyOpenGL
 {
@@ -14,22 +15,24 @@ namespace MyOpenGL
 		unsigned int ID;
 		Shader(const GLchar * vertexPath, const GLchar * fragmentPath);
 
-		void use();
+		void Use();
 
-		void setBool(const std::string &name, bool value) const;
-		void setBool(const std::string &name, bool value1, bool value2) const;
-		void setBool(const std::string &name, bool value1, bool value2, bool value3) const;
-		void setBool(const std::string &name, bool value1, bool value2, bool value3, bool value4) const;
+		void SetBool(const std::string &name, bool value) const;
+		void SetBool(const std::string &name, bool value1, bool value2) const;
+		void SetBool(const std::string &name, bool value1, bool value2, bool value3) const;
+		void SetBool(const std::string &name, bool value1, bool value2, bool value3, bool value4) const;
 
-		void setInt(const std::string &name, GLint value) const;
-		void setInt(const std::string &name, GLint value1, GLint value2)const;
-		void setInt(const std::string &name, GLint value1, GLint value2, GLint value3)const;
-		void setInt(const std::string &name, GLint value1, GLint value2, GLint value3, GLint value4)const;
+		void SetInt(const std::string &name, GLint value) const;
+		void SetInt(const std::string &name, GLint value1, GLint value2)const;
+		void SetInt(const std::string &name, GLint value1, GLint value2, GLint value3)const;
+		void SetInt(const std::string &name, GLint value1, GLint value2, GLint value3, GLint value4)const;
 
-		void setFloat(const std::string &name, GLfloat value)const;
-		void setFloat(const std::string &name, GLfloat value1, GLfloat value2)const;
-		void setFloat(const std::string &name, GLfloat value1, GLfloat value2, GLfloat value3)const;
-		void setFloat(const std::string &name, GLfloat value1, GLfloat value2, GLfloat value3, GLfloat value4)const;
+		void SetFloat(const std::string &name, GLfloat value)const;
+		void SetFloat(const std::string &name, GLfloat value1, GLfloat value2)const;
+		void SetFloat(const std::string &name, GLfloat value1, GLfloat value2, GLfloat value3)const;
+		void SetFloat(const std::string &name, GLfloat value1, GLfloat value2, GLfloat value3, GLfloat value4)const;
+
+		void SetMatrix4f(const std::string &name, const GLfloat *value);
 	};
 
 	class GLFWInitialization
@@ -46,8 +49,8 @@ namespace MyOpenGL
 		_CreateWindow(_CreateWindow & window0);
 		_CreateWindow & operator =(const _CreateWindow &rhs);
 		~_CreateWindow(void);
-		GLFWwindow * use(void) const;
-		bool available(void);
+		GLFWwindow * Use(void) const;
+		bool Available(void);
 	private:
 		mutable GLFWwindow * window = nullptr;
 	};
@@ -106,10 +109,12 @@ namespace MyOpenGL
 	{
 	public:
 		_Texture2D(const std::string & file);
+		bool AddTexture(const std::string & file);
 		void ReBind();
 	private:
-		unsigned int texture;
+		std::vector<unsigned int> texture;
 	};
+
 
 	template<typename T>
 	class _Color
