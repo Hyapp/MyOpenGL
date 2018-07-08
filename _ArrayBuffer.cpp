@@ -24,9 +24,13 @@ namespace MyOpenGL
 		}
 	}
 
+	void _ArrayBuffer::ReBind(void)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER,VBO);
+	}
+
 	_ArrayBuffer::~_ArrayBuffer(void)
 	{
 		glDeleteBuffers(1, &(this->VBO));
 	}
-
 }

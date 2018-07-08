@@ -6,6 +6,9 @@
 #include<iostream>
 #include<GLFW\glfw3.h>
 #include<vector>
+#include<glm.hpp>
+#include<gtc\matrix_transform.hpp>
+#include<gtc\type_ptr.hpp>
 
 namespace MyOpenGL
 {
@@ -14,6 +17,7 @@ namespace MyOpenGL
 	public:
 		unsigned int ID;
 		Shader(const GLchar * vertexPath, const GLchar * fragmentPath);
+		Shader(const std::string vertexPath, const std::string fragmentPath);
 
 		void Use();
 
@@ -32,7 +36,10 @@ namespace MyOpenGL
 		void SetFloat(const std::string &name, GLfloat value1, GLfloat value2, GLfloat value3)const;
 		void SetFloat(const std::string &name, GLfloat value1, GLfloat value2, GLfloat value3, GLfloat value4)const;
 
+		void SetVec3(const std::string &name, const glm::vec3 & value) const;
+
 		void SetMatrix4f(const std::string &name, const GLfloat *value);
+		void SetMatrix4f(const std::string &name, const glm::mat4 &value);
 	};
 
 	class GLFWInitialization
@@ -51,8 +58,17 @@ namespace MyOpenGL
 		~_CreateWindow(void);
 		GLFWwindow * Use(void) const;
 		bool Available(void);
+
+
+		bool SetSizeChangeFun(void(*frame)(GLFWwindow *, int, int));
+		void SetSizeChangeCallback(bool value);
 	private:
+		unsigned int width, height;
 		mutable GLFWwindow * window = nullptr;
+		void(*framebufferSize)(GLFWwindow *, int, int) = nullptr;
+		bool isFrameSizeOpen = false;
+		void SizeChanged(GLFWwindow* window, int width, int height);
+		void nothingToDo(GLFWwindow *, int, int);
 	};
 
 	class _GLADInitialization
@@ -65,11 +81,11 @@ namespace MyOpenGL
 		bool boolean;
 	};
 
-	class _VertexArray
+	class _VertexReference
 	{
 	public:
-		explicit _VertexArray(void);
-		~_VertexArray(void);
+		explicit _VertexReference(void);
+		~_VertexReference(void);
 		void ReBind(void);
 	private:
 		unsigned int VAO;
@@ -84,7 +100,8 @@ namespace MyOpenGL
 	class _ArrayBuffer
 	{
 	public:
-		explicit _ArrayBuffer(unsigned int num, GLfloat * data, _GL_PLOT_WAY);
+		_ArrayBuffer(unsigned int num, GLfloat * data, _GL_PLOT_WAY);
+		void ReBind(void);
 		~_ArrayBuffer(void);
 	private:
 		unsigned int VBO;
@@ -149,5 +166,47 @@ namespace MyOpenGL
 	private:
 		_Color<GLfloat> color;
 		bool stuta;
+	};
+}
+
+namespace MyCamera
+{
+	class _Camera
+	{
+	public:
+		_Camera();
+		_Camera(const glm::vec3 &cameraPos, const glm::vec3 &cameraFront, const glm::vec3 &cameraUp);
+
+		glm::mat4 LookAt();
+		glm::mat4 Perspective(int scr_width, int scr_height);
+
+		float GetFov() const;
+		bool SetFov(float value);
+		float GetNear() const;
+		bool SetNear(float value);
+		float GetFar() const;
+		bool SetFar(float value);
+
+		glm::vec3 GetCameraPos(void) const;
+		bool SetCameraPos(const glm::vec3 &value);
+
+		glm::vec3 GetCameraFront(void) const;
+		bool SetCameraFront(const glm::vec3 &value);
+
+		glm::vec3 GetCameraUp(void) const;
+		bool SetCameraUp(const glm::vec3 &value);
+
+		float GetSpeed(void) const;
+		bool SetSpeed(float value);
+
+		void ProcessInput(GLFWwindow *window);
+		void ProcessInput(const MyOpenGL::_CreateWindow & window);
+	private:
+		glm::vec3 cameraPos;
+		glm::vec3 cameraFront;
+		glm::vec3 cameraUp;
+
+		float fov = 45.0f, _near = 0.1f, _far = 100.0f;
+		float speed = 0.2f;
 	};
 }

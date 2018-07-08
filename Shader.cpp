@@ -69,6 +69,11 @@ namespace MyOpenGL
 		glDeleteShader(fragment);
 	}
 
+	Shader::Shader(const std::string vertexPath, const std::string fragmentPath)
+	{
+		Shader::Shader(vertexPath.c_str(), fragmentPath.c_str());
+	}
+
 	void Shader::Use()
 	{
 		glUseProgram(ID);
@@ -134,8 +139,18 @@ namespace MyOpenGL
 		glUniform4f(glGetUniformLocation(ID, name.c_str()), value1, value2, value3, value4);
 	}
 
+	void Shader::SetVec3(const std::string & name, const glm::vec3 &value) const
+	{
+		glUniform3f(glGetUniformLocation(ID, name.c_str()), value.x, value.y, value.z);
+	}
+
 	void Shader::SetMatrix4f(const std::string & name,const GLfloat * value)
 	{
 		glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, value);
+	}
+
+	void Shader::SetMatrix4f(const std::string & name, const glm::mat4 & value)
+	{
+		glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 	}
 }

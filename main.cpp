@@ -1,77 +1,133 @@
-#include"Boost.h"
-#include"OpenGL.h"
-#include"Graphics.h"
-#include<glm.hpp>
-#include<gtc\matrix_transform.hpp>
-#include<gtc\type_ptr.hpp>
+#include"Game.h"
+#include"All.h"
 
-void processInput(GLFWwindow * window)
+unsigned int scr_width = 800, scr_height = 800;
+MyCamera::_Camera camera;
+float lastX, lastY, yaw = -90.0f, pitch = 0.0f;
+bool first_mouse = true;
+
+void scroll_callback(GLFWwindow * window, double xoffset, double yoffset)
 {
-	if (glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	auto yOffset = static_cast<float>(yoffset);
+	const auto fov = camera.GetFov();
+	if (fov >= 1.0f && fov <= 45.0f)
 	{
-		glfwSetWindowShouldClose(window, true);
+		camera.SetFov(fov - yOffset);
 	}
+	if (fov <= 1.0f)
+	{
+		camera.SetFov(1.0f);
+	}
+	if (fov >= 45.0f)
+	{
+		camera.SetFov(45.0f);
+	}
+}
+
+void mouse_callback(GLFWwindow * window, double xpos, double ypos)
+{	
+
+	auto xPos = static_cast<float>(xpos);
+	auto yPos = static_cast<float>(ypos);
+
+	if (first_mouse)
+	{
+		lastX = xPos;
+		lastY = yPos;
+		first_mouse = false;
+	}
+
+	float xoffset = xPos - lastX;
+	float yoffset = lastY - yPos;
+	lastX = xPos;
+	lastY = yPos;
+
+	float sensitivity = 0.1f;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	if (pitch > 89.0f)
+	{
+		pitch = 89.0f;
+	}
+	if (pitch < -89.0f)
+	{
+		pitch = -89.0f;
+	}
+	glm::vec3 front;
+	front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
+	front.y = sin(glm::radians(pitch));
+	front.z = cos(glm::radians(pitch))*sin(glm::radians(yaw));
+	camera.SetCameraFront(glm::normalize(front));
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
+	scr_width = width;
+	scr_height = height;
 	glViewport(0, 0, width, height);
 }
 
 int main()
 {
-	using namespace MyOpenGL;
-	using namespace Beyond;
-	using namespace MyGraphics;
-	GLFWInitialization::GLFWInit(4, 6);
-	_CreateWindow window(800, 800, "Text");
+//	using namespace MyOpenGL;
+//	using namespace MyGraphics;
+//	using namespace Beyond;
+//
+//	GLFWInitialization::GLFWInit(4, 5);
+//	_CreateWindow window(1000, 1000, "Design0");
+//	if (!window.Use())
+//	{
+//		std::cout << "Failed to create window!" << std::endl;
+//		return -1;
+//	}
+//	glfwMakeContextCurrent(window.Use());
+////	glfwSetInputMode(window.Use(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//	_GLADInitialization glad;
+//	if (!glad.Available())
+//	{
+//		std::cout << "Failed to create glad!" << std::endl;
+//		return -1;
+//	}
+//
+//	glfwSetFramebufferSizeCallback(window.Use(), framebuffer_size_callback);
+//	glfwSetScrollCallback(window.Use(), scroll_callback);
+//	glfwSetCursorPosCallback(window.Use(), mouse_callback);
+//
+//	glEnable(GL_DEPTH_TEST);
+	//Shader planetShader("Shader//planet.vs","Shader//planet.fs");
+	//Shader asShader("Shader//asteroid.vs", "Shader//asteroid.fs");
+	//Game0::Basic_Sense model4("Model//4//4.DXF", glm::mat4(1.0f), asShader);
+	//std::vector<Shader> shaders;
+	//shaders.push_back(asShader);
+	//shaders.push_back(asShader);
+	//shaders.push_back(asShader);
+//	Game0::Sense sense0("Model//Mov", shaders);
+//	Game0::Basic_Control_Sense csense("Model//1//1.obj", glm::mat4(1.0f), asShader);
+//	Game0::Basic_Sense cmodel("Model//1//1.obj", glm::mat4(1.0f), asShader);
+//	Game0::Movable_Sense csenses("Model//Mov",shaders);
+//	Game0::Game game("Model//Static", "Model//Mov", shaders, shaders);
+//	Game0::Game game("Model//Static", "Model//Mov");
 
-	glfwMakeContextCurrent(window.Use());
-	glfwSetFramebufferSizeCallback(window.Use(), framebuffer_size_callback);
+//	__Background background(__Color(0.0f, 0.0f, 0.0f, 1.0f));
+	AllControl::Sight sight("AllSight");
+//	sight.InitSign();
+	sight.InitSign();
+	sight.Loop();
+	//while (!glfwWindowShouldClose(window.Use()))
+	//{
+	//	camera.ProcessInput(window);
+	//	background.Use(); 
+	//	glClear(GL_DEPTH_BUFFER_BIT);
+	//	game.UpdateCamera(camera);
+	//	game.DrawGame();
 
-	_GLADInitialization glad;
-	if (!glad.Available() && !window.Available())
-	{
-		return -1;
-	}
-	glEnable(GL_DEPTH_TEST);
-
-	Shader shader("Shader\\ma.vs", "Shader\\ma.fs");
-	cuda Cudas;
-	float *vertices = Cudas.Use();
-
-	_VertexArray vertexarray;
-	_ArrayBuffer arraybuffer(36*5, vertices, _GL_PLOT_WAY::static_draw);
-	_VertexAttrubPoint(0, 3, 5, (void *)0);
-	_VertexAttrubPoint(1, 2, 5, (void *)(3 * sizeof(float)));
-
-	_Texture2D texture("timg.jpg");
-	texture.AddTexture("a.png");
-	shader.Use();
-	shader.SetInt("texture1", 0);
-	shader.SetInt("texture2", 1);
-	__Background background(__Color(0.0f, 0.0f, 0.0f, 1.0f));
-	while (!glfwWindowShouldClose(window.Use()))
-	{
-		processInput(window.Use());
-		background.Use();
-		glClear(GL_DEPTH_BUFFER_BIT);
-		glm::mat4 model(1.0f);
-		model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-		glm::mat4 view(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(45.0f), static_cast<float>(1), 0.1f, 100.0f);
-		texture.ReBind();
-		shader.SetMatrix4f("model", glm::value_ptr(model));
-		shader.SetMatrix4f("view", glm::value_ptr(view));
-		shader.SetMatrix4f("projection", glm::value_ptr(projection));
-		shader.Use();
-		vertexarray.ReBind();
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glfwSwapBuffers(window.Use());
-		glfwPollEvents();
-	}
+	//	glfwSwapBuffers(window.Use());
+	//	glfwPollEvents();
+	//}
 	glfwTerminate();
 	return 0;
 }

@@ -3,7 +3,7 @@
 namespace MyOpenGL
 {
 	template<typename T>
-	inline _Color<T>::_Color(T & red, T & green, T & blue, T & a)
+	_Color<T>::_Color(T & red, T & green, T & blue, T & a)
 	{
 		this->red = static_cast<float>(red);
 		this->green = static_cast<float>(green);
@@ -51,7 +51,7 @@ namespace MyOpenGL
 		}
 		catch (const std::exception&)
 		{
-			return false
+			return false;
 		}
 		return false;
 	}

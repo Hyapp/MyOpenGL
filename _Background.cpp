@@ -15,7 +15,7 @@ namespace MyOpenGL
 		}
 		catch (const std::exception&)
 		{
-			this->color = _Color(0.0f, 0.0f, 0.0f, 0.0f);
+			this->color = _Color<float>(0.0f, 0.0f, 0.0f, 0.0f);
 			this->stuta = false;
 		}
 	}

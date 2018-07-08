@@ -2,17 +2,16 @@
 
 namespace MyOpenGL
 {
-	_VertexArray::_VertexArray(void)
+	_VertexReference::_VertexReference(void)
 	{
 		glGenVertexArrays(1, &(this->VAO));
-		glBindVertexArray(this->VAO);
 	}
 
-	_VertexArray::~_VertexArray(void)
+	_VertexReference::~_VertexReference(void)
 	{
 		glDeleteVertexArrays(1, &(this->VAO));
 	}
-	void _VertexArray::ReBind(void)
+	void _VertexReference::ReBind(void)
 	{
 		glBindVertexArray(this->VAO);
 	}
